@@ -13,6 +13,7 @@ struct ContentView: View {
     struct Card: Identifiable {
         let id = UUID()
         var isFlipped: Bool = false
+        var isMatched: Bool = false
         let pairId: Int // match pairs
         let emoji: String // emoji to display
     }
@@ -89,27 +90,31 @@ struct ContentView: View {
     
     // function to flip cards and check for matches
     func flipCard(_ cardToFlip: Card) {
-        if cardToFlip.isFlipped {
+        if cardToFlip.isFlipped || cardToFlip.isMatched {
             return
         }
         if let index = cards.firstIndex(where: { $0.id == cardToFlip.id }) {
-                cards[index].isFlipped = true
-                flippedCards.append(cards[index])
-                
-                // Check for matches when 2 cards are flipped
-                if flippedCards.count == 2 {
-                    if flippedCards[0].pairId == flippedCards[1].pairId {
-                        // Match! Clear flippedCards but keep them flipped
-                        flippedCards.removeAll()
-                    } else {
-                        // Not a match, flip them back after delay
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                            resetFlippedCards()
+            cards[index].isFlipped = true
+            flippedCards.append(cards[index])
+            
+            if flippedCards.count == 2 {
+                if flippedCards[0].pairId == flippedCards[1].pairId {
+                    // mark as matched
+                    for flippedCard in flippedCards {
+                        if let matchedIndex = cards.firstIndex(where: { $0.id == flippedCard.id }) {
+                            cards[matchedIndex].isMatched = true
                         }
+                    }
+                    flippedCards.removeAll()
+                } else {
+                    // not a match, flip back
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        resetFlippedCards()
                     }
                 }
             }
         }
+    }
 }
     
 
@@ -130,6 +135,9 @@ struct CardView: View {
                     .font(.system(size: 50))
             }
         }
+        .opacity(card.isMatched ? 0 : 1) // if its matched, hide it
+        .scaleEffect(card.isMatched ? 0.1 : 1) // make it tiny
+        .animation(.easeOut(duration: 0.3), value: card.isMatched) 
         .onTapGesture {
             onTap()
         }
