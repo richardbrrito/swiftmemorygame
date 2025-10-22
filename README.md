@@ -36,19 +36,17 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented user stories:
 
-Here is a reminder on how to embed Loom videos on GitHub. Feel free to remove this reminder once you upload your README. 
+https://github.com/user-attachments/assets/5fdbd611-52fa-420f-9fbc-d1ec66300e0c
 
-[Guide]](https://www.youtube.com/watch?v=GA92eKlYio4) .
 
-## Notes
+
 
 Describe any challenges encountered while building the app.
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright [2025] [Richard Brito]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
